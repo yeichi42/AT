@@ -36,6 +36,7 @@ public class Main2Activity extends AppCompatActivity {
                 intent.putExtra("position",pos);
                 intent.putExtra("name", task);
                 startActivity(intent);
+                //finish();
             }
         });
 

@@ -18,9 +18,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static List<String> values;
 
+    private static int p;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //super.onBackPressed();
         setContentView(R.layout.activity_main);
 
         final ListView listView = (ListView) findViewById(R.id.listView);
@@ -34,17 +37,14 @@ public class MainActivity extends AppCompatActivity {
             values.add("ok");
         }
 
-
-
         Intent i = getIntent();
         int position = i.getIntExtra("position", 0);
         if (i.getStringExtra("name") != null) {
             String task = i.getStringExtra("name");
-
-            if(listView.getSelectedItemPosition() != position)
-            values.add(task);
+            if(p != position)
+                values.add(task);
             else
-            values.set(position, task);
+                values.set(position, task);
         }
 
 
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemPos = position;
+                p = itemPos;
                 String itemVal = (String) listView.getItemAtPosition(position);
                 Toast.makeText(getApplicationContext(),
                         "Position :" + itemPos + "  ListItem : " + itemVal, Toast.LENGTH_LONG)
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 detail.putExtra("position", position);
                 detail.putExtra("name", itemVal);
                 startActivity(detail);
+                //finish();
             }
         });
 
@@ -77,11 +79,21 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), Main2Activity.class);
+                intent.putExtra("position", -1);
                 startActivityForResult(intent, 0);
                 //setContentView(R.layout.detail_view);
+                //finish();
             }
         });
 
 
+
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
