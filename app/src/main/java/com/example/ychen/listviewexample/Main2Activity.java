@@ -1,56 +1,74 @@
 package com.example.ychen.listviewexample;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.lang.reflect.Array;
+
 public class Main2Activity extends AppCompatActivity {
 
-    private int pos;
+    private int id;
+
+    private TodoDAO todoDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        todoDAO = new TodoDAO(this);
+        todoDAO.open();
 
         bindEdit();
-        bindSave();
     }
 
-    private void bindSave() {
+    public void onClick(View view) {
+        EditText et = (EditText) findViewById(R.id.editText);
+        String task = et.getText().toString();
+        Intent intent = new Intent(view.getContext(), MainActivity.class);
+        switch (view.getId()) {
+            case R.id.button:
 
-        Button btn = (Button) findViewById(R.id.button);
-
-        btn.setOnClickListener(new View.OnClickListener(){
-
-            public void onClick(View v){
-
-                EditText et = (EditText) findViewById(R.id.editText);
-                String task = et.getText().toString();
-
-
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
-                intent.putExtra("position",pos);
-                intent.putExtra("name", task);
+                if(id == -1) {
+                    todoDAO.createTodo(task);
+                }
+                else {
+                    todoDAO.updateTodo(task, id);
+                }
                 startActivity(intent);
-                //finish();
-            }
-        });
+                break;
+
+            case R.id.button2:
+                todoDAO.deleteTodo(id);
+                startActivity(intent);
+                break;
+
+            default:
+                Log.e("MISS", "Miss");
+                break;
+        }
 
     }
 
-    private void bindEdit(){
+    private void bindEdit() {
         Intent i = getIntent();
-        pos = i.getIntExtra("position", 0);
+        id = i.getIntExtra("id", 0);
         String name = i.getStringExtra("name");
+        boolean edit = i.getBooleanExtra("edit", false);
+
+        Button btnDel = (Button) findViewById(R.id.button2);
+        if(edit)
+            btnDel.setVisibility(View.VISIBLE);
+
         EditText et = (EditText) findViewById(R.id.editText);
         et.setText(name);
     }
-
-
 
 
 }

@@ -16,79 +16,58 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static List<String> values;
-
-    private static int p;
+    private static List<Todo> todoList;
+    private TodoDAO todoDAO;
+    private static int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //super.onBackPressed();
         setContentView(R.layout.activity_main);
 
+        todoDAO = new TodoDAO(this);
+        todoDAO.open();
+
+        todoList = todoDAO.getAllTodos();
+
         final ListView listView = (ListView) findViewById(R.id.listView);
-/*
-        String[] values = new String[]{
-                "A", "B", "C", "D", "E"
-        };
-  */
-        if(values == null) {
-            values = new ArrayList<String>();
-            values.add("ok");
-        }
 
-        Intent i = getIntent();
-        int position = i.getIntExtra("position", 0);
-        if (i.getStringExtra("name") != null) {
-            String task = i.getStringExtra("name");
-            if(p != position)
-                values.add(task);
-            else
-                values.set(position, task);
-        }
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        ArrayAdapter<Todo> adapter = new ArrayAdapter<Todo>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, todoList);
 
         listView.setAdapter(adapter);
 
-
+        //need to refactor this
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemPos = position;
-                p = itemPos;
-                String itemVal = (String) listView.getItemAtPosition(position);
+                Todo itemVal = (Todo) listView.getItemAtPosition(position);
                 Toast.makeText(getApplicationContext(),
                         "Position :" + itemPos + "  ListItem : " + itemVal, Toast.LENGTH_LONG)
                         .show();
 
                 Intent detail = new Intent(getApplicationContext(), Main2Activity.class);
-                detail.putExtra("position", position);
-                detail.putExtra("name", itemVal);
+                detail.putExtra("name", itemVal.getName());
+                detail.putExtra("id", itemVal.getId());
+                detail.putExtra("edit", true);
                 startActivity(detail);
-                //finish();
             }
         });
-
-
-        ImageButton ib = (ImageButton) findViewById(R.id.imageButton);
-
-        ib.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Main2Activity.class);
-                intent.putExtra("position", -1);
-                startActivityForResult(intent, 0);
-                //setContentView(R.layout.detail_view);
-                //finish();
-            }
-        });
-
-
-
     }
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.imageButton:
+                Intent intent = new Intent(view.getContext(), Main2Activity.class);
+                intent.putExtra("id", -1);
+                startActivityForResult(intent, 0);
+                break;
+            default:
+                break;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
