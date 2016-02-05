@@ -46,17 +46,7 @@ public class TodoDAO {
     public void updateTodo(String todo, int id) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TODO, todo);
-//        //public long insert(String table, String nullColumnHack, ContentValues values) {
-//        long insertId = database.insert(MySQLiteHelper.TABLE_TODO, null, values);
-//        //public int update(String table, ContentValues values, String whereClause, String[] whereArgs) {
         database.update(MySQLiteHelper.TABLE_TODO, values, MySQLiteHelper.COLUMN_ID + " = " + id, null);
-//        Cursor cursor = database.query(MySQLiteHelper.TABLE_TODO, allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
-//                null, null, null);
-//        cursor.moveToFirst();
-//        Todo newTodo = cursorToTodo(cursor);
-//        cursor.close();
-//        return newTodo;
-
     }
 
 

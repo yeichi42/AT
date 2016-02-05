@@ -16,7 +16,7 @@ import java.lang.reflect.Array;
 public class Main2Activity extends AppCompatActivity {
 
     private int id;
-
+    private DateTime dt;
     private TodoDAO todoDAO;
 
     @Override
@@ -33,6 +33,7 @@ public class Main2Activity extends AppCompatActivity {
         EditText et = (EditText) findViewById(R.id.editText);
         String task = et.getText().toString();
         Intent intent = new Intent(view.getContext(), MainActivity.class);
+
         switch (view.getId()) {
             case R.id.button:
 
