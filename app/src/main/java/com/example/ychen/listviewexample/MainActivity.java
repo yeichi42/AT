@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent detail = new Intent(getApplicationContext(), Main2Activity.class);
                 detail.putExtra("name", itemVal.getName());
                 detail.putExtra("id", itemVal.getId());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+                String date = sdf.format(itemVal.getDate());
+                detail.putExtra("date", date);
                 detail.putExtra("edit", true);
                 startActivity(detail);
             }

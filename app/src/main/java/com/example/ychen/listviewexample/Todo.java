@@ -1,11 +1,23 @@
 package com.example.ychen.listviewexample;
 
+import java.util.Date;
+
 /**
  * Created by ychen on 2/3/2016.
  */
 public class Todo {
     private String name;
     private int id;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    private Date date;
 
     public int getId() {
         return id;

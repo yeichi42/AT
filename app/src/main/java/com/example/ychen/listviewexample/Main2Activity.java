@@ -10,8 +10,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -34,14 +39,20 @@ public class Main2Activity extends AppCompatActivity {
         String task = et.getText().toString();
         Intent intent = new Intent(view.getContext(), MainActivity.class);
 
+        TextView txtDate = (TextView) findViewById(R.id.textView2);
+        TextView txtTime = (TextView) findViewById(R.id.textView3);
+
+        String combined = txtDate.getText().toString() +" "+ txtTime.getText().toString();
+
+
         switch (view.getId()) {
             case R.id.button:
 
                 if(id == -1) {
-                    todoDAO.createTodo(task);
+                    todoDAO.createTodo(task, combined);
                 }
                 else {
-                    todoDAO.updateTodo(task, id);
+                    todoDAO.updateTodo(task, id, combined);
                 }
                 startActivity(intent);
                 break;
@@ -63,13 +74,21 @@ public class Main2Activity extends AppCompatActivity {
         id = i.getIntExtra("id", 0);
         String name = i.getStringExtra("name");
         boolean edit = i.getBooleanExtra("edit", false);
+        String date = i.getStringExtra("date");
 
         Button btnDel = (Button) findViewById(R.id.button2);
-        if(edit)
+        if(edit) {
             btnDel.setVisibility(View.VISIBLE);
+            TextView txtDate = (TextView) findViewById(R.id.textView2);
+            TextView txtTime = (TextView) findViewById(R.id.textView3);
+            txtDate.setText(date.split(" ")[0]);
+            txtTime.setText(date.split(" ")[1]);
+        }
 
         EditText et = (EditText) findViewById(R.id.editText);
         et.setText(name);
+
+
     }
 
     public void showDatePickerDialog(View v) {

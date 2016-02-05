@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +19,7 @@ public class TodoDAO {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
 
-    private String[] allColumns = {MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_TODO};
+    private String[] allColumns = {MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_TODO, "todo_date"};
 
     public TodoDAO(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -30,9 +33,10 @@ public class TodoDAO {
         dbHelper.close();
     }
 
-    public Todo createTodo(String todo) {
+    public Todo createTodo(String todo, String date) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TODO, todo);
+        values.put("todo_date", date);
         long insertId = database.insert(MySQLiteHelper.TABLE_TODO, null, values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_TODO, allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
@@ -43,9 +47,10 @@ public class TodoDAO {
 
     }
 
-    public void updateTodo(String todo, int id) {
+    public void updateTodo(String todo, int id, String date) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TODO, todo);
+        values.put("todo_date", date);
         database.update(MySQLiteHelper.TABLE_TODO, values, MySQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
@@ -77,6 +82,14 @@ public class TodoDAO {
         Todo todo = new Todo();
         todo.setId(cursor.getInt(0));
         todo.setName(cursor.getString(1));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+        Date date = new Date();
+        try {
+            date = dateFormat.parse(cursor.getString(2).toString());
+        }catch(ParseException e){
+
+        }
+        todo.setDate(date);
         return todo;
     }
 }
