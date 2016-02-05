@@ -19,7 +19,7 @@ public class TodoDAO {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
 
-    private String[] allColumns = {MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_TODO, "todo_date"};
+    private String[] allColumns = {MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_TODO, MySQLiteHelper.COLUMN_DATE};
 
     public TodoDAO(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -36,7 +36,7 @@ public class TodoDAO {
     public Todo createTodo(String todo, String date) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TODO, todo);
-        values.put("todo_date", date);
+        values.put(MySQLiteHelper.COLUMN_DATE, date);
         long insertId = database.insert(MySQLiteHelper.TABLE_TODO, null, values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_TODO, allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
@@ -50,7 +50,7 @@ public class TodoDAO {
     public void updateTodo(String todo, int id, String date) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_TODO, todo);
-        values.put("todo_date", date);
+        values.put(MySQLiteHelper.COLUMN_DATE, date);
         database.update(MySQLiteHelper.TABLE_TODO, values, MySQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
@@ -82,14 +82,11 @@ public class TodoDAO {
         Todo todo = new Todo();
         todo.setId(cursor.getInt(0));
         todo.setName(cursor.getString(1));
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm");
-        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm a");
         try {
-            date = dateFormat.parse(cursor.getString(2).toString());
-        }catch(ParseException e){
-
-        }
-        todo.setDate(date);
+            Date date = dateFormat.parse(cursor.getString(2));
+            todo.setDate(date);
+        }catch (ParseException e){}
         return todo;
     }
 }

@@ -44,7 +44,6 @@ public class Main2Activity extends AppCompatActivity {
 
         String combined = txtDate.getText().toString() +" "+ txtTime.getText().toString();
 
-
         switch (view.getId()) {
             case R.id.button:
 
@@ -82,7 +81,7 @@ public class Main2Activity extends AppCompatActivity {
             TextView txtDate = (TextView) findViewById(R.id.textView2);
             TextView txtTime = (TextView) findViewById(R.id.textView3);
             txtDate.setText(date.split(" ")[0]);
-            txtTime.setText(date.split(" ")[1]);
+            txtTime.setText(date.split(" ")[1] + " " + date.split(" ")[2]);
         }
 
         EditText et = (EditText) findViewById(R.id.editText);
