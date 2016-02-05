@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">ListViewExample</string>
+    <string name="app_name">Todo with Date</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="date">Select Date</string>
+    <string name="time">Select Time</string>
 </resources>

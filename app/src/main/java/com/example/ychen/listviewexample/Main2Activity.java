@@ -1,5 +1,6 @@
 package com.example.ychen.listviewexample;
 
+import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -70,5 +71,14 @@ public class Main2Activity extends AppCompatActivity {
         et.setText(name);
     }
 
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DateTime.DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    public void showTimePickerDialog(View v) {
+        DialogFragment newFragment = new DateTime.TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
+    }
 
 }

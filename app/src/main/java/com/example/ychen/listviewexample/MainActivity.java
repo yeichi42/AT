@@ -25,11 +25,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         todoDAO = new TodoDAO(this);
         todoDAO.open();
-
         todoList = todoDAO.getAllTodos();
-
         final ListView listView = (ListView) findViewById(R.id.listView);
 
         ArrayAdapter<Todo> adapter = new ArrayAdapter<Todo>(this,
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void onClick(View view){
         switch (view.getId()){
